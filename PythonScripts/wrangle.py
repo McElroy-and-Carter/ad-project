@@ -38,6 +38,12 @@ def get_curriculum_log():
     df = df.merge(df2, left_on='cohort_id', right_on='id')
     
     df = df.drop(columns = ['id','slack','deleted_at'])
+    df.loc[df['program_id'] == 1, 'program_name'] = 'PHP'
+    df.loc[df['program_id'] == 2, 'program_name'] = 'Java'
+    df.loc[df['program_id'] == 3, 'program_name'] = 'Data Science' 
+    df.loc[df['program_id'] == 4, 'program_name'] = 'Front End'
+    
+    df = df.dropna()
     
     df.date = pd.to_datetime(df.date)
     df = df.set_index(df.date)
