@@ -45,6 +45,10 @@ def get_curriculum_log():
     
     df = df.dropna()
     
+    df.start_date = pd.to_datetime(df.start_date)
+    df.end_date = pd.to_datetime(df.end_date)
+    df.created_at =pd.to_datetime(df.created_at)
+    df.updated_at =pd.to_datetime(df.updated_at)
     df.date = pd.to_datetime(df.date)
     df = df.set_index(df.date)
     pages = df['endpoint'].resample('d').count()
