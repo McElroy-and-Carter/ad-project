@@ -53,7 +53,29 @@ def get_curriculum_log():
     df = df.set_index(df.date)
     pages = df['endpoint'].resample('d').count()
     df = df.set_index('date')
+
     
     
     
     return df
+
+def get_lower_and_upper_bounds(df, k=1.5):
+    '''
+    calculates the lower and upper bound to locate outliers and displays them
+    note: recommended k be 1.5
+    '''
+    for i in df.columns:
+        if df[i].dtypes != 'object':
+            quartile1, quartile3 = np.percentile(df[i], [25,75])
+            IQR_value = quartile3 - quartile1
+            lower_bound = (quartile1 - (k * IQR_value))
+            upper_bound = (quartile3 + (k * IQR_value))
+            print('------------------------------------------------------')
+            print(f'For {i} the lower bound is {lower_bound} and  upper bound is {upper_bound}')
+            outliers_lower = df[df[i] < lower_bound]
+            outliers_upper = df[df[i] > upper_bound]
+            outliers = pd.concat([outliers_lower, outliers_upper], axis=0)
+            print('')
+            print(outliers,'\n')
+    else:
+        print('')
